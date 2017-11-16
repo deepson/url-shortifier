@@ -1,6 +1,6 @@
 <?php
 
-require_once "DBRecord.php";
+require_once "../myframework/DBRecord.php";
 
 /**
  * Class LinkModel

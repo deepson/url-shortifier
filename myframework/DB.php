@@ -2,9 +2,6 @@
 
 
 class DB {
-
-    const TABLE ='links';
-
     /**
      * @var $connection mysqli
      */

@@ -8,7 +8,7 @@ final class App {
     public static $db;
     function __construct() {
         // Load application configuration.
-        self::$config = include 'config.php';
+        self::$config = include '../protected/config.php';
         self::$production = self::$config['production'];
 
         if(!self::$production) {

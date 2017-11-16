@@ -16,12 +16,13 @@ abstract class DBRecord
 
     public function save()
     {
-        if($this->isNew) {
-            return $this->add();
-        }
         $idName = $this->getColNameByRole(self::ROLE_PR_KEY);
         $id = $this->data[$idName];
         unset($this->data[$this->getColNameByRole(self::ROLE_PR_KEY)]);
+
+        if($this->isNew) {
+            return $this->add();
+        }
 
         $newValues = '';
         $variables = [];
@@ -31,7 +32,11 @@ abstract class DBRecord
             $variables[$column] = $value;
         }
         $newValues = substr($newValues, 0, -1);
-        DB::update($newValues, $variables, "$idName=$id", 1, $this->tableName());
+
+        if(DB::update($newValues, $variables, "$idName=$id", 1, $this->tableName())) {
+            return true;
+        }
+        return false;
     }
 
     public function findById($id)
@@ -41,8 +46,15 @@ abstract class DBRecord
         $condition = "$idColumnName = :id";
         $result = DB::select($condition, $variables, 1, $this->tableName());
         $this->data = $result->fetch_assoc();
-        $this->isNew = false;
+        if($this->data) {
+            $this->isNew = false;
+            $success = true;
+        } else {
+            $this->isNew = true;
+            $success = false;
+        }
         $this->makeProps();
+        return $success;
     }
 
 
@@ -52,8 +64,13 @@ abstract class DBRecord
 
     protected function makeProps()
     {
-        foreach($this->data as $column => &$value)
-        {
+        // Create variables in data array, if object is new.
+        if($this->isNew) {
+            foreach (array_keys($this->getColumns()) as $column) {
+                $this->data[$column] = '';
+            }
+        }
+        foreach ($this->data as $column => &$value) {
             $this->{$column} = &$value;
         }
     }
@@ -70,6 +87,20 @@ abstract class DBRecord
 
     protected function add()
     {
+        $columns = '';
+        $values = '';
+        $variables = [];
+        foreach ($this->data as $column => $value) {
+            $columns .= "$column,";
+            $values .= ":$column,";
+            $variables[$column] = $value;
+        }
+        $columns = substr($columns, 0, -1);
+        $values = substr($values, 0, -1);
 
+        if(DB::insert($columns, $values, $variables, $this->tableName())) {
+            return true;
+        }
+        return false;
     }
 }
