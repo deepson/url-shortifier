@@ -48,7 +48,7 @@ class DB {
      * @param string $columns - Names of columns which will be 'selected'.
      * @return bool|mysqli_result
      */
-    public static function select($condition = '', $variables = [], $limit = '', $table = self::TABLE, $columns = '*') {
+    public static function select($condition = '', $variables = [], $limit = '', $table, $columns = '*') {
         if($condition != '') {
             $condition = 'WHERE ' . self::fixInjections($condition, $variables);
         }
@@ -73,7 +73,7 @@ class DB {
      * @param string $table - SQL table name.
      * @return bool|mysqli_result
      */
-    public static function update($newValues, $variables = [], $condition, $limit = '', $table = self::TABLE) {
+    public static function update($newValues, $variables = [], $condition, $limit = '', $table) {
         $condition = 'WHERE ' . self::fixInjections($condition, $variables);
         $newValues = self::fixInjections($newValues, $variables);
         if($limit !== '') {
@@ -96,7 +96,7 @@ class DB {
      * @param string $table - SQL table name.
      * @return bool|mysqli_result
      */
-    public static function insert($columns, $values, $variables = [], $table = self::TABLE) {
+    public static function insert($columns, $values, $variables = [], $table) {
         $values = self::fixInjections($values, $variables);
         $sql = "INSERT INTO `$table` ($columns) VALUES ($values)";
         try {

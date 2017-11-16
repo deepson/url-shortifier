@@ -3,7 +3,7 @@
 /**
  * Class DBRecord
  */
-abstract class DBRecord
+abstract class DBRecord extends Base
 {
     const ROLE_PR_KEY = 1;
     const ROLE_UNDEFINED = -1;

@@ -1,8 +1,9 @@
 <?php
 
 require_once 'DB.php';
+require_once 'Base.php';
 
-final class App {
+final class App extends Base {
     public static $config;
     public static $production;
     public static $db;
@@ -25,3 +26,5 @@ final class App {
         die();
     }
 }
+
+new App;
