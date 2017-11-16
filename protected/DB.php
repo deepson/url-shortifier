@@ -110,6 +110,6 @@ class DB {
         }
     }
 
-    // TODO: DELETE.
+    // TODO: DELETE sql implementation (not needed in current task).
 
 }
