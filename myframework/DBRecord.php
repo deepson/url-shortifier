@@ -8,6 +8,12 @@ abstract class DBRecord extends Base
     const ROLE_PR_KEY = 1;
     const ROLE_UNDEFINED = -1;
 
+    public $isNew = true;
+
+    function __construct()
+    {
+        $this->makeProps();
+    }
 
     /**
      * @return string
@@ -39,12 +45,48 @@ abstract class DBRecord extends Base
         return false;
     }
 
+    public function find($condition, $variables)
+    {
+        $result = $this->selectAll($condition, $variables, 1);
+        $this->setData($result);
+        return $result;
+    }
+
+
+    public function findAll($condition, $variables, $className, $limit = '')
+    {
+        $results = $this->selectAll($condition, $variables, $limit);
+        $dataArr = [];
+        do {
+            $model = new $className();
+            $model->setData($results);
+            if($model->isNew) break;
+            $dataArr[] = $model;
+        } while(true);
+        return $dataArr;
+    }
+
+    public function selectAll($condition, $variables, $limit = '')
+    {
+        return DB::select($condition, $variables, $limit, $this->tableName());
+    }
+
     public function findById($id)
     {
         $idColumnName = $this->getColNameByRole(self::ROLE_PR_KEY);
         $variables['id'] = $id;
         $condition = "$idColumnName = :id";
-        $result = DB::select($condition, $variables, 1, $this->tableName());
+        $result = $this->find($condition, $variables);
+        return boolval($result);
+    }
+
+
+    /**
+     * @param $result mysqli_result
+     * @return bool
+     */
+    public function setData($result)
+    {
         $this->data = $result->fetch_assoc();
         if($this->data) {
             $this->isNew = false;
@@ -57,10 +99,7 @@ abstract class DBRecord extends Base
         return $success;
     }
 
-
     protected $data;
-
-    protected $isNew = true;
 
     protected function makeProps()
     {

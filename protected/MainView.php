@@ -1,24 +1,13 @@
-<div class="jumbotron">
-  <h1>Сокращатель ссылок</h1>
-  <p>Resize this responsive page to see the effect!</p>
-</div>
+<div class="center-wrap">
+    <div class="center-block">
 
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Column 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+        <form id="shortifier_form">
+            <input id="inp_link" type="text" name="link" class="link_input" value="http://" autofocus>
+            <button class="js-send-form" type="submit" value="Submit">Сократить</button>
+        </form>
     </div>
-    <div class="col-sm-4">
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 3</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-  </div>
+
+</div>
+<div id="response_placeholder">
+
 </div>

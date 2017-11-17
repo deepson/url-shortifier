@@ -6,4 +6,10 @@ return [
         'password' => 'hackme'
     ],
     'production' => false,
+    'controllers' => [
+        'DefaultController' => '/'
+    ],
+    'models' => [
+        'LinkModel'
+    ]
 ];

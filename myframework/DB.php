@@ -1,12 +1,13 @@
 <?php
 
 
-class DB {
+final class DB {
     /**
      * @var $connection mysqli
      */
     public static $connection = null;
-    function __construct() {
+    function __construct()
+    {
         /** @var $conf string[] - fetching mysql parameters from app config. */
         $conf = App::$config['mysql'];
 
@@ -28,7 +29,8 @@ class DB {
      * @param string $separator - variable declaration symbol in $string.
      * @return string - result safe string.
      */
-    public static function fixInjections($string, $varArray, $separator = ':') {
+    public static function fixInjections($string, $varArray, $separator = ':')
+    {
         foreach ($varArray as $varName => $varValue) {
             $safeVarValue = self::$connection->real_escape_string($varValue);
             // Mark all values as strings.
@@ -48,7 +50,8 @@ class DB {
      * @param string $columns - Names of columns which will be 'selected'.
      * @return bool|mysqli_result
      */
-    public static function select($condition = '', $variables = [], $limit = '', $table, $columns = '*') {
+    public static function select($condition = '', $variables = [], $limit = '', $table, $columns = '*')
+    {
         if($condition != '') {
             $condition = 'WHERE ' . self::fixInjections($condition, $variables);
         }
@@ -56,6 +59,7 @@ class DB {
             $limit = 'LIMIT ' . intval($limit);
         }
         $sql = "SELECT $columns FROM `$table` $condition $limit";
+        //echo $sql;
         try {
             return self::$connection->query($sql);
         } catch (mysqli_sql_exception $e) {
@@ -73,7 +77,8 @@ class DB {
      * @param string $table - SQL table name.
      * @return bool|mysqli_result
      */
-    public static function update($newValues, $variables = [], $condition, $limit = '', $table) {
+    public static function update($newValues, $variables = [], $condition, $limit = '', $table)
+    {
         $condition = 'WHERE ' . self::fixInjections($condition, $variables);
         $newValues = self::fixInjections($newValues, $variables);
         if($limit !== '') {
@@ -96,7 +101,8 @@ class DB {
      * @param string $table - SQL table name.
      * @return bool|mysqli_result
      */
-    public static function insert($columns, $values, $variables = [], $table) {
+    public static function insert($columns, $values, $variables = [], $table)
+    {
         $values = self::fixInjections($values, $variables);
         $sql = "INSERT INTO `$table` ($columns) VALUES ($values)";
         try {

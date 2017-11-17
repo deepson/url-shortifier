@@ -3,11 +3,16 @@
 require_once 'DB.php';
 require_once 'Base.php';
 
-final class App extends Base {
+// TODO: This class to complete MVC.
+
+final class App extends Base
+{
     public static $config;
     public static $production;
     public static $db;
-    function __construct() {
+    public static $routes;
+    function __construct()
+    {
         // Load application configuration.
         self::$config = include '../protected/config.php';
         self::$production = self::$config['production'];
@@ -18,12 +23,39 @@ final class App extends Base {
 
         // Initialize DB connection
         self::$db = new DB();
+
+        foreach (self::$config['models'] as $model) {
+            require_once "../protected/$model.php";
+        }
+        foreach (self::$config['controllers'] as $name => $route) {
+            require_once "../protected/$name.php";
+        }
     }
-    public static function kill($devMsg, $prodMsg) {
+    public static function kill($devMsg, $prodMsg)
+    {
         echo 'FATAL: ';
         echo self::$production ? $prodMsg : $devMsg;
         //TODO: render view here
         die();
+    }
+    public static function registerController($route, $obj)
+    {
+        self::$routes[] = [
+            'route' => $route,
+            'object' => $obj
+        ];
+    }
+    public static function routeUrl($url)
+    {
+        foreach (self::$routes as $route) {
+            if($url === $route['route']) {
+                //$route['object']->tryAction;
+            }
+        }
+    }
+    function __destruct()
+    {
+        echo Base::$renderBuffer;
     }
 }
 
