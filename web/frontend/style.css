@@ -7,11 +7,10 @@ body, h1, h2 {
 #header {
     padding-left:50px;
     padding-top: 5px;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     background-color: #eeeeee;
     box-shadow: 0 2px 3px rgba(23, 23, 23, 0.18);
-    color: #f9f1e2;
-    text-shadow: 1px 1px 2px rgba(18, 21, 27, 0.8);
+    color: #4459d2;
 }
 
 .sitename {

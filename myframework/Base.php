@@ -28,7 +28,8 @@ abstract class Base
 
     public static function renderError($msg, $title = '')
     {
-        self::$renderBuffer = $msg;
+        $siteName = App::$config['sitename'];
+        $content = $msg;
 
         include self::$protected . self::$layout . '.php';
     }

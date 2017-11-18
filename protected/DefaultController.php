@@ -69,7 +69,10 @@ class DefaultController extends Base
     public function actionList()
     {
         $lists = (new LinkModel())->findAll('',[], 'LinkModel');
+        ob_start();
         var_dump($lists);
+        $msg = ob_get_clean();
+        self::renderError($msg, 'Типа тайный список ссылок');
     }
 }
 

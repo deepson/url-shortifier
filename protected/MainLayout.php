@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/frontend/style.css">
     <script src="/frontend/jquery-3.2.1.min.js"></script>
     <script src="/frontend/main.js"></script>
-
 </head>
 <body>
 <div id="header">
