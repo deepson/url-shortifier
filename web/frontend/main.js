@@ -11,6 +11,9 @@
 
             event.preventDefault();
 
+            const block = document.getElementById('js-alert');
+            block.innerHTML = '';
+
             $.ajax({
                 method: 'GET',
                 url: 'add',
@@ -18,8 +21,19 @@
                 success: data => {
                     $('#response_placeholder').prepend(data);
                 },
+                error: msg => {
+
+                    block.innerHTML = msg.responseText;
+                }
             });
 
         });
+        $('#inp_link').on('focus', function (event) {
+            $('.input_wrap').addClass('js-input-focus');
+        });
+        $('#inp_link').on('focusout', function (event) {
+            $('.input_wrap').removeClass('js-input-focus');
+        });
     });
+
 })(jQuery);

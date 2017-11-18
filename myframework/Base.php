@@ -3,7 +3,6 @@
 abstract class Base
 {
     public static $layout = 'MainLayout';
-    public static $siteName = 'Сократитель ссылок';
     public static $parameters = [];
     public static $protected = '../protected/';
     public static function renderPartial($view, $variables = [])
@@ -16,13 +15,20 @@ abstract class Base
     }
     public static function render($view, $variables = [])
     {
-        $siteName = self::$siteName;
+        $siteName = App::$config['sitename'];
 
         self::renderPartial($view, $variables);
 
         $content = self::$renderBuffer;
 
         self::$renderBuffer = '';
+
+        include self::$protected . self::$layout . '.php';
+    }
+
+    public static function renderError($msg, $title = '')
+    {
+        self::$renderBuffer = $msg;
 
         include self::$protected . self::$layout . '.php';
     }

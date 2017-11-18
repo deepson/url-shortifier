@@ -31,12 +31,20 @@ final class App extends Base
             require_once "../protected/$name.php";
         }
     }
-    public static function kill($devMsg, $prodMsg)
+    public static function kill($devMsg, $prodMsg, $both = '', $responseCode = 500, $title , $partial=false)
     {
-        echo 'FATAL: ';
-        echo self::$production ? $prodMsg : $devMsg;
-        //TODO: render view here
-        http_response_code (500);
+        http_response_code($responseCode);
+
+        $err = self::$production ? $prodMsg : $devMsg;
+
+        $err =  '<div style="padding: 5px 10px; background-color: #ab4d14; color: white;">ОШИБКА: ' . $both . $err . '</div>';
+
+        if($partial) {
+            echo $err;
+        } else {
+            self::renderError($err, $title);
+        }
+
         die();
     }
     public static function registerController($route, $obj)

@@ -58,6 +58,9 @@ abstract class DBRecord extends Base
         $results = $this->selectAll($condition, $variables, $limit);
         $dataArr = [];
         do {
+            /**
+             * @var $model DBRecord
+             */
             $model = new $className();
             $model->setData($results);
             if($model->isNew) break;

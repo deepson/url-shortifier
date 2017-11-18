@@ -1,5 +1,6 @@
 <?php
 return [
+    'sitename' => 'Сокращатель ссылок',
     'mysql'=> [
         'database' => 'zimalab_test',
         'user' => 'zimalab_test',

@@ -41,7 +41,7 @@ class DefaultController extends Base
     public function actionAdd($link)
     {
         if(filter_var($link, FILTER_VALIDATE_URL) === false) {
-            App::kill("$link не является ссылкой.","$link не является ссылкой. Возможно, вы забыли протокол");
+            App::kill('','', "Ввод '$link' не является ссылкой. Возможно, вы забыли протокол", 500, '',true);
         }
         $link = LinkModel::createShort($link);
         self::renderPartial("ResponseView", ['modelLink' => $link]);
@@ -53,6 +53,7 @@ class DefaultController extends Base
         if($link->isNew) {
             http_response_code ( 404);
             //echo "Нет такой ссылки.";
+            App::kill('','', 'К сожалению, такой короткой ссылки я не знаю. Даже и не знаю, куда вас перенаправить...<br>', 404, 'Несуществующая ссылка');
             return;
         }
         if($link->hits < 5) {
@@ -60,7 +61,7 @@ class DefaultController extends Base
 
         } else {
             http_response_code (404);
-            echo "Ссылка просрочена. <br>";
+            App::kill( '','',"Ссылка просрочена. <br>", 404, 'Ссылка просрочена :(');
         }
         $link->hits++;
         $link->save();
