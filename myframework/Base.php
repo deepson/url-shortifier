@@ -27,6 +27,14 @@ abstract class Base
         include self::$protected . self::$layout . '.php';
     }
 
+    public static function getPath()
+    {
+        $path = '';
+        $match = [];
+        preg_match('/^\A[a-zA-Z0-9\/_\-+]*/', $_SERVER['REQUEST_URI'], $match);
+        $path = substr($match[0], 1);
+        return $path;
+    }
 
     protected static $renderBuffer = '';
 }

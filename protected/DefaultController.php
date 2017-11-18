@@ -13,7 +13,7 @@ class DefaultController extends Base
     private $str = '';
     function __construct()
     {
-        $this->str = substr($_SERVER['PHP_SELF'], 11);
+        $this->str = self::getPath();
         switch ($this->str) {
             case '':
                 $this->actionIndex();
@@ -51,14 +51,16 @@ class DefaultController extends Base
     {
         $link = LinkModel::byHash($hash);
         if($link->isNew) {
-            echo "Нет такой ссылки.";
+            http_response_code ( 404);
+            //echo "Нет такой ссылки.";
             return;
         }
         if($link->hits < 5) {
             header("Location: $link->link");
 
         } else {
-            echo "Ссылка просрочена. Сожалеем об этом.";
+            http_response_code (404);
+            echo "Ссылка просрочена. <br>";
         }
         $link->hits++;
         $link->save();

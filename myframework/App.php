@@ -36,6 +36,7 @@ final class App extends Base
         echo 'FATAL: ';
         echo self::$production ? $prodMsg : $devMsg;
         //TODO: render view here
+        http_response_code (500);
         die();
     }
     public static function registerController($route, $obj)
